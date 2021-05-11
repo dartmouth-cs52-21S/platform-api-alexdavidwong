@@ -2,6 +2,20 @@ import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import morgan from 'morgan';
+import mongoose from 'mongoose';
+import apiRouter from './router';
+
+// DB Setup
+const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/platform_db';
+
+mongoose.connect(mongoURI).then(() => {
+  console.log('connected to database:', mongoURI);
+}).catch((err) => {
+  console.log('error: could not connect to db:', err);
+});
+
+// response to mongoose deprecation warning
+mongoose.set('useFindAndModify', false);
 
 // initialize
 const app = express();
@@ -24,13 +38,7 @@ app.set('views', path.join(__dirname, '../src/views'));
 // enable json message body for posting data to API
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // To parse the incoming requests with JSON payloads
-
-// additional init stuff should go before hitting the routing
-
-// default index route
-app.get('/', (req, res) => {
-  res.send('hi');
-});
+app.use('/api', apiRouter);
 
 // START THE SERVER
 // =============================================================================
