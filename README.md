@@ -1,23 +1,17 @@
-<<<<<<< HEAD
-# Title
+# Lab 5 pt. 1: API for Blog Platform
 
-*description*
+*creating the servers side to services our blog from Lab 4*
 
-[deployed url](http://url-if-deployed-here)
+[deployed url](https://blogpost-lab5-alexdavidwong.herokuapp.com/api)
 
 ## What Worked Well
+- getting the server up 
+- coding and setting up the server and api
 
 ## What Didn't
+- little trouble integrating with the front end from lab 4
 
 ## Extra Credit
+- process tags as an array and some styling around that
 
 ## Screenshots
-=======
-# starter express app template
-
-* node with babel
-* expressjs
-* airbnb eslint rules
-
-Procfile set up to run on [heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs#deploy-the-app)
->>>>>>> c99dd2c2a52922e5c5411e20e4e54c7295c6adf6

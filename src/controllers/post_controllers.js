@@ -39,7 +39,7 @@ export const deletePost = async (id) => {
 };
 export const updatePost = async (id, postFields) => {
   try {
-    const result = await Post.findByIdAndUpdate(id, postFields);
+    const result = await Post.findByIdAndUpdate(id, postFields, { new: true });
     return result;
   } catch (error) {
     throw new Error(`updating post error ${error}`);
