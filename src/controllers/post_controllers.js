@@ -1,12 +1,14 @@
 import Post from '../models/post_model';
 
-export const createPost = async (postFields) => {
+export const createPost = async (postFields, theUser) => {
   try {
     const newPost = new Post();
     newPost.title = postFields.title;
     newPost.tags = postFields.tags;
     newPost.content = postFields.content;
     newPost.coverUrl = postFields.coverUrl;
+    newPost.author = theUser;
+    newPost.authorName = theUser.authorName;
 
     const savedPost = await newPost.save();
     return savedPost;

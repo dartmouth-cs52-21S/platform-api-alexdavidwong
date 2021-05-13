@@ -1,6 +1,7 @@
-/* eslint-disable no-unused-vars */
 import { Router } from 'express';
 import * as Posts from './controllers/post_controllers';
+import * as UserController from './controllers/user_controller';
+import { requireAuth, requireSignin } from './services/passport';
 
 const router = Router();
 
@@ -17,7 +18,7 @@ const handleAllPosts = async (req, res) => {
 // creating new post
 const handleNewPost = async (req, res) => {
   try {
-    const result = await Posts.createPost(req.body);
+    const result = await Posts.createPost(req.body, req.user);
     res.json(result);
   } catch (error) {
     res.status(500).json({ error });
@@ -54,14 +55,32 @@ const handleDelete = async (req, res) => {
   }
 };
 
+router.post('/signin', requireSignin, async (req, res) => {
+  try {
+    const token = UserController.signin(req.user);
+    res.json({ token, email: req.user.email });
+  } catch (error) {
+    res.status(422).send({ error: error.toString() });
+  }
+});
+
+router.post('/signup', async (req, res) => {
+  try {
+    const token = await UserController.signup(req.body);
+    res.json({ token, email: req.body.email });
+  } catch (error) {
+    res.status(422).send({ error: error.toString() });
+  }
+});
+
 router.route('/posts')
   .get(handleAllPosts)
-  .post(handleNewPost);
+  .post(requireAuth, handleNewPost);
 
 router.route('/posts/:id')
-  .put(handleUpdates)
+  .put(requireAuth, handleUpdates)
   .get(handlePost)
-  .delete(handleDelete);
+  .delete(requireAuth, handleDelete);
 
 router.get('/', (req, res) => {
   res.json({ message: 'welcome to our blog api!' });
