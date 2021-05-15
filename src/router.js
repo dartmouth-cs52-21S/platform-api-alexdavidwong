@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { Router } from 'express';
 import * as Posts from './controllers/post_controllers';
+import signS3 from './services/s3';
 
 const router = Router();
 
@@ -53,6 +54,8 @@ const handleDelete = async (req, res) => {
     res.status(500).json({ error });
   }
 };
+
+router.get('/sign-s3', signS3);
 
 router.route('/posts')
   .get(handleAllPosts)

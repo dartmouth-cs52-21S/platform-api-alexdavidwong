@@ -3,6 +3,7 @@ import cors from 'cors';
 import path from 'path';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 import apiRouter from './router';
 
 // DB Setup
@@ -16,6 +17,8 @@ mongoose.connect(mongoURI).then(() => {
 
 // response to mongoose deprecation warning
 mongoose.set('useFindAndModify', false);
+
+dotenv.config({ silent: true });
 
 // initialize
 const app = express();
