@@ -1,3 +1,7 @@
+/*
+ * some comment are mine and others from original assignment
+*/
+
 import passport from 'passport';
 import LocalStrategy from 'passport-local';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
@@ -10,10 +14,10 @@ import User from '../models/user_model';
 // loads in .env file if needed
 dotenv.config({ silent: true });
 
-// options for local strategy, we'll use email AS the username
-// not have separate ones
+// setting options to use email as the username
 const localOptions = { usernameField: 'email' };
 
+// kept from original commenting
 // options for jwt strategy
 // we'll pass in the jwt in an `authorization` header
 // so passport can find it there
@@ -21,13 +25,13 @@ const jwtOptions = {
   jwtFromRequest: ExtractJwt.fromHeader('authorization'),
   secretOrKey: process.env.AUTH_SECRET,
 };
-// NOTE: we are not calling this a bearer token (although it technically is), if you see people use Bearer in front of token on the internet you could either ignore it, use it but then you have to parse it out here as well as prepend it on the frontend.
 
-// username/email + password authentication strategy
+// email and password authentification
 const localLogin = new LocalStrategy(localOptions, async (email, password, done) => {
   let user;
   let isMatch;
 
+  // looks for the user from inputed email
   try {
     user = await User.findOne({ email });
     isMatch = await user.comparePassword(password);
@@ -35,6 +39,7 @@ const localLogin = new LocalStrategy(localOptions, async (email, password, done)
     return done(error);
   }
 
+  // throw an error if the email and passwords do not match any users
   if (!user) {
     return done(null, false);
   } else if (!isMatch) {
@@ -44,6 +49,7 @@ const localLogin = new LocalStrategy(localOptions, async (email, password, done)
   }
 });
 
+// jwt logging in the user
 const jwtLogin = new JwtStrategy(jwtOptions, async (payload, done) => {
   let user;
   try {
